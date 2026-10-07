@@ -1,0 +1,35 @@
+name: Test
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: ruby/setup-ruby@14594264cd68ce8a2345dd349bc3d138a4ef85c8 # v1
+        with:
+          ruby-version: '3.4'
+          bundler-cache: true
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: '24'
+      - name: Run Ruby tests
+        run: bundle exec ruby test/medama_test.rb
+      - name: Install Cucumber.js for adapter tests
+        run: >-
+          npm install --prefix "$RUNNER_TEMP/medama-cucumber"
+          --registry https://registry.npmjs.org
+          --ignore-scripts --no-save --package-lock=false
+          @cucumber/cucumber@13.2.1
+      - name: Run JavaScript adapter tests
+        env:
+          MEDAMA_CUCUMBER_NODE_MODULES: ${{ runner.temp }}/medama-cucumber/node_modules
+        run: bundle exec ruby test/adapter/cucumber_test.rb
+      - name: Build gem
+        run: gem build medama.gemspec --output "$RUNNER_TEMP/medama.gem"
