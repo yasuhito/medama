@@ -18,7 +18,7 @@ module Medama
       parser = option_parser
       parser.parse!(argv)
       return 0 if @done
-      raise Error, "adapter must be ruby or cucumber-js" unless %w[ruby cucumber-js].include?(@options[:adapter])
+      raise Error, "the Ruby prototype supports only --adapter ruby; use the npm CLI for JavaScript" unless @options[:adapter] == "ruby"
       raise Error, "format must be progress or json" unless %w[progress json].include?(@options[:format])
       files = expand_paths(argv.empty? ? ["features"] : argv, ".feature.md")
       documents = files.map { |path| Medama.parse(File.read(path, encoding: "UTF-8"), path: path) }
@@ -31,21 +31,19 @@ module Medama
         report(cases.map { |scenario| scenario.merge(status: "listed") })
         return 0
       end
-      results = if @options[:adapter] == "ruby"
+      results = begin
                   defaults = ["features/support/**/*.rb", "features/step_definitions/**/*.rb"]
                   patterns = @options[:require].empty? ? defaults : @options[:require]
                   required = patterns.flat_map { |pattern| Dir.glob(pattern) }.uniq.sort
                   if !@options[:require].empty? && patterns.any? { |pattern| Dir.glob(pattern).empty? }
                     raise Error, "--require did not match a Ruby file"
                   end
-                  raise Error, "no Ruby step files; use --require or --adapter cucumber-js" if required.empty?
+                  raise Error, "no Ruby step files; use --require" if required.empty?
                   registry = Registry.new
                   with_step_output do
                     registry.load_files(required)
                     Runner.new(registry).run(cases)
                   end
-                else
-                  CucumberAdapter.new(@options, @err).run(documents, cases)
                 end
       report(results)
       results.any? { |result| !%w[passed skipped].include?(result[:status]) } ? 1 : 0
@@ -67,7 +65,7 @@ module Medama
     def option_parser
       OptionParser.new do |parser|
         parser.banner = "Usage: medama [options] [features/**/*.feature.md ...]"
-        parser.on("--adapter NAME", "ruby (default) or cucumber-js") { |v| @options[:adapter] = v }
+        parser.on("--adapter NAME", "ruby (default)") { |v| @options[:adapter] = v }
         parser.on("-r", "--require GLOB", "step/support files, repeatable") { |v| @options[:require] << v }
         parser.on("--tag TAG", "require tag, repeatable (AND)") { |v| tag(:include, v) }
         parser.on("--exclude-tag TAG", "exclude tag, repeatable") { |v| tag(:exclude, v) }

@@ -1,0 +1,40 @@
+{
+  "name": "@yasuhito/medama",
+  "version": "0.1.0",
+  "description": "Run scenarios written in Markdown with a small independent JavaScript runner.",
+  "license": "MIT",
+  "author": "Yasuhito Takamiya",
+  "homepage": "https://github.com/yasuhito/medama",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yasuhito/medama.git"
+  },
+  "type": "commonjs",
+  "engines": {
+    "node": "^22.19.0 || >=23.6.0"
+  },
+  "bin": {
+    "medama": "bin/medama.cjs"
+  },
+  "exports": {
+    ".": {
+      "types": "./lib/steps.d.cts",
+      "default": "./lib/steps.cjs"
+    }
+  },
+  "types": "./lib/steps.d.cts",
+  "files": [
+    "bin/",
+    "lib/",
+    "examples/",
+    "README.md",
+    "LICENSE",
+    "THIRD_PARTY_NOTICES.md"
+  ],
+  "scripts": {
+    "test": "node --test test/*.test.cjs"
+  },
+  "dependencies": {
+    "markdown-it": "15.0.2"
+  }
+}

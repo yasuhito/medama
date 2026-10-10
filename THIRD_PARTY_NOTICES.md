@@ -1,19 +1,13 @@
 # Provenance and reuse boundary
 
-medama's Ruby parser, runner, CLI, and JavaScript bridge are newly written for this project. No Cucumber parser, generated grammar, or runner source has been copied or ported into the gem.
+Markdown parsing is provided by `markdown-it` 15.0.2, copyright 2014 Vitaly Puzrin and Alex Kocharin, licensed MIT. Its complete notice is at `lib/vendor/markdown-it/LICENSE`. It is an npm runtime dependency, not vendored implementation code. The generated package lock records official registry URLs and integrity hashes for its six transitive dependencies: argparse (PSF-2.0), entities (BSD-2-Clause), linkify-it, mdurl, punycode.js and uc.micro (MIT). Their notices are distributed in their own dependency packages.
 
-The unchanged keyword data `lib/medama/vendor/gherkin/gherkin-languages.json` is copied from the installed `@cucumber/gherkin` 42.0.0 `src/gherkin-languages.json`. It is used only to identify known executable keywords and reject unsupported syntax while preserving ordinary Markdown prose. The complete upstream MIT license and copyright notice are bundled at `lib/medama/vendor/gherkin/LICENSE`. No multilingual parser or runner is imported. The JavaScript Gherkin parser remains outside this gem.
+medama's Markdown-AST conversion, grammatical ownership, table validation, case compiler, CLI, JavaScript runner, expression subset, and CommonJS import shim are written for this project. No upstream Gherkin parser, generated grammar, Cucumber runtime, or expression implementation is copied or imported.
 
-The initial Markdown dialect was checked against the user's pi-formula feature files at commit `5aefebf5c03e54cfb3eb63e6f705e1efb7d7d525` (MIT, copyright 2020-2026 Yasuhito Takamiya). Those feature and step files remain in pi-formula and are not bundled in this gem.
+The unchanged keyword data `lib/vendor/gherkin/gherkin-languages.json` comes from `@cucumber/gherkin` 42.0.0 `src/gherkin-languages.json`. It identifies reserved structural headings. It does not parse or execute scenarios. Its complete upstream MIT license and copyright notice are bundled at `lib/vendor/gherkin/LICENSE`.
 
-The optional `cucumber-js` adapter resolves and calls the consuming project's installed `@cucumber/cucumber/api`. In the first trial this is Cucumber.js 13.2.1 (MIT, copyright Julien Biezemans and contributors), with `@cucumber/gherkin` 42.0.0 (MIT, copyright 2017 Cucumber Ltd, Gaspar Nagy, Björn Rasmusson, Peter Sergeant, and contributors). The adapter uses Cucumber's public configuration and execution interface; Cucumber owns JavaScript step matching, hooks, World, timeouts, and assertions. These npm packages are not vendored or installed by medama.
+The architecture was checked against Yasuhito Takamiya's [issue 719 proposal and later prototype report](https://github.com/cucumber/gherkin/issues/719#issuecomment-6007772360). The local Java CommonMark prototype was read for design reference; its implementation and official fixtures were not copied into this package. The scope and chosen latest prose policy are documented in DESIGN.md.
 
-Reference sources inspected locally:
+The required execution interface was checked against pi-formula at commit `5aefebf5c03e54cfb3eb63e6f705e1efb7d7d525` (MIT, copyright 2020-2026 Yasuhito Takamiya). Its feature/step files remain in pi-formula and are not bundled. The arithmetic example and test fixtures were authored for medama.
 
-- `pi-formula/node_modules/@cucumber/gherkin/src/GherkinInMarkdownTokenMatcher.ts`
-- `pi-formula/node_modules/@cucumber/gherkin/src/GherkinLine.ts`
-- `pi-formula/node_modules/@cucumber/cucumber/lib/api/*.d.ts`
-- `pi-formula/node_modules/@cucumber/cucumber/lib/formatter/json_formatter.js`
-- Their installed `package.json` and `LICENSE` files.
-
-Upstream: [Cucumber.js](https://github.com/cucumber/cucumber-js), [Gherkin](https://github.com/cucumber/gherkin). This work does not contact upstream or change Gherkin issue 719.
+Cucumber.js 13.2.1 is a comparison oracle outside this package, not a runtime/development/install dependency. Upstream references: [Cucumber.js](https://github.com/cucumber/cucumber-js), [Gherkin](https://github.com/cucumber/gherkin). This work only reads issue 719 and does not contact upstream.
