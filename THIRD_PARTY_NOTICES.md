@@ -1,6 +1,6 @@
 # Provenance and reuse boundary
 
-Markdown parsing is provided by `markdown-it` 15.0.2, copyright 2014 Vitaly Puzrin and Alex Kocharin, licensed MIT. Its complete notice is at `lib/vendor/markdown-it/LICENSE`. It is an npm runtime dependency, not vendored implementation code. The generated package lock records official registry URLs and integrity hashes for its six transitive dependencies: argparse (PSF-2.0), entities (BSD-2-Clause), linkify-it, mdurl, punycode.js and uc.micro (MIT). Their notices are distributed in their own dependency packages.
+Markdown parsing is provided by `markdown-it` 15.0.3, copyright 2014 Vitaly Puzrin and Alex Kocharin, licensed MIT. Its complete notice is at `lib/vendor/markdown-it/LICENSE`. It is an npm runtime dependency, not vendored implementation code. The generated package lock records official registry URLs and integrity hashes for its six transitive dependencies: argparse (PSF-2.0), entities (BSD-2-Clause), linkify-it, mdurl, punycode.js and uc.micro (MIT). Their notices are distributed in their own dependency packages.
 
 medama's Markdown-AST conversion, grammatical ownership, table validation, case compiler, CLI, JavaScript runner, expression subset, and CommonJS import shim are written for this project. No upstream Gherkin parser, generated grammar, Cucumber runtime, or expression implementation is copied or imported.
 

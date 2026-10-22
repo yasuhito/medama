@@ -1,6 +1,6 @@
 # medama
 
-Markdown に書いたシナリオを実行する、小さな JavaScript / TypeScript CLI。Node.js `^22.19.0 || >=23.6.0` と npm で使えます。Ruby や Cucumber.js のインストールは不要です。Markdown の構造解析には `markdown-it 15.0.2` を使い、シナリオ変換と実行は medama 自身が行います。
+Markdown に書いたシナリオを実行する、小さな JavaScript / TypeScript CLI。Node.js `^22.19.0 || >=23.6.0` と npm で使えます。Ruby や Cucumber.js のインストールは不要です。Markdown の構造解析には `markdown-it 15.0.3` を使い、シナリオ変換と実行は medama 自身が行います。
 
 将来は npm の JavaScript 版と gem の Ruby 版を提供する計画です。この候補の最初の受入対象は npm 版です。既存の Ruby parser / runner はソースの `ruby/` に保持し、共通の基本文法を `spec/markdown_cases.json`、新しい AST 文法を `spec/markdown_ast_cases.json` に記録します。Ruby prototype の AST 移行は後続 milestone です。npm tarball には Ruby を含めず、Ruby 完全互換や gem 公開は別の milestone です。
 
