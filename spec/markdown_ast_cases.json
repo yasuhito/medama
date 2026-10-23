@@ -1,0 +1,182 @@
+[
+  {
+    "name": "Setext executable headings",
+    "source": "Feature: setext\n===\n\nScenario: value\n---\n- Then okay\n",
+    "expected": {
+      "names": [
+        "value"
+      ]
+    }
+  },
+  {
+    "name": "raw inline spelling preserved",
+    "source": "# Feature: corpus\n## Scenario: value\n- Then value `\\vartheta`\n",
+    "expected": {
+      "texts": [
+        [
+          "value `\\vartheta`"
+        ]
+      ]
+    }
+  },
+  {
+    "name": "nested bullet prose is opaque",
+    "source": "# Feature: corpus\n## Scenario: value\n- A note\n  - Then fake\n\n- Then okay\n",
+    "expected": {
+      "texts": [
+        [
+          "okay"
+        ]
+      ]
+    }
+  },
+  {
+    "name": "ordered list prose is opaque",
+    "source": "# Feature: corpus\n## Scenario: value\n1. Then fake\n\n- Then okay\n",
+    "expected": {
+      "texts": [
+        [
+          "okay"
+        ]
+      ]
+    }
+  },
+  {
+    "name": "quoted executable illustration is opaque",
+    "source": "# Feature: corpus\n## Scenario: value\n> ## Scenario: fake\n> - Then fake\n\n- Then okay\n",
+    "expected": {
+      "texts": [
+        [
+          "okay"
+        ]
+      ]
+    }
+  },
+  {
+    "name": "indented code is opaque",
+    "source": "# Feature: corpus\n## Scenario: value\n\n    - Then fake\n\n- Then okay\n",
+    "expected": {
+      "texts": [
+        [
+          "okay"
+        ]
+      ]
+    }
+  },
+  {
+    "name": "lazy continuation follows Markdown paragraph",
+    "source": "# Feature: corpus\n## Scenario: value\n- Then one\n  continuation\n",
+    "expected": {
+      "texts": [
+        [
+          "one\ncontinuation"
+        ]
+      ]
+    }
+  },
+  {
+    "name": "standalone explanatory table preserved",
+    "source": "# Feature: corpus\n## Scenario: value\n\n| explanation |\n| --- |\n| kept |\n\n- Then okay\n",
+    "expected": {
+      "descriptions": [
+        "| explanation |\n| --- |\n| kept |"
+      ]
+    }
+  },
+  {
+    "name": "prose detaches a step table",
+    "source": "# Feature: corpus\n## Scenario: value\n- Then okay\n\nExplanation.\n\n  | ignored |\n  | --- |\n  | kept |\n",
+    "expected": {
+      "arguments": [
+        [
+          null
+        ]
+      ]
+    }
+  },
+  {
+    "name": "heading detaches a step table",
+    "source": "# Feature: corpus\n## Scenario: value\n- Then okay\n\n### Explanation\n| ignored |\n| --- |\n| kept |\n",
+    "expected": {
+      "arguments": [
+        [
+          null
+        ]
+      ]
+    }
+  },
+  {
+    "name": "unindented step table",
+    "source": "# Feature: corpus\n## Scenario: value\n- Then table\n| key |\n| --- |\n| value |\n",
+    "expected": {
+      "arguments": [
+        [
+          {
+            "type": "table",
+            "rows": [
+              [
+                "key"
+              ],
+              [
+                "value"
+              ]
+            ]
+          }
+        ]
+      ]
+    }
+  },
+  {
+    "name": "first Examples table owns values",
+    "source": "# Feature: examples\n## Scenario Outline: value <n>\n- Then <n>\n### Examples:\nExplanation before data.\n\n| n |\n| --- |\n| one |\n\n| n |\n| --- |\n| two |\n",
+    "expected": {
+      "names": [
+        "value one"
+      ]
+    }
+  },
+  {
+    "name": "missing Examples delimiter rejected",
+    "source": "# Feature: examples\n## Scenario Outline: value <n>\n- Then <n>\n### Examples:\n| n |\n| one |\n",
+    "error": "delimiter row"
+  },
+  {
+    "name": "Examples with a delimiter retain their values",
+    "source": "# Feature: examples\n## Scenario Outline: value <n>\n- Then <n>\n### Examples:\n| n |\n| --- |\n| one |\n",
+    "expected": {
+      "names": [
+        "value one"
+      ]
+    }
+  },
+  {
+    "name": "missing DataTable delimiter rejected",
+    "source": "# Feature: corpus\n## Scenario: value\n- Then table\n| key |\n| value |\n",
+    "error": "delimiter row"
+  },
+  {
+    "name": "inconsistent DataTable width rejected",
+    "source": "# Feature: corpus\n## Scenario: value\n- Then table\n| a | b |\n| --- | --- |\n| one |\n",
+    "error": "inconsistent table width"
+  },
+  {
+    "name": "media references retained as Markdown description",
+    "source": "# Feature: corpus\n## Scenario: value\n\n![result](assets/result.png)\n\n![animation](assets/flow.gif)\n\n[video](assets/demo.mp4)\n\n<video controls src=\"assets/demo.mp4\"></video>\n\n- Then okay\n",
+    "expected": {
+      "descriptions": [
+        "![result](assets/result.png)\n\n![animation](assets/flow.gif)\n\n[video](assets/demo.mp4)\n\n<video controls src=\"assets/demo.mp4\"></video>"
+      ]
+    }
+  },
+  {
+    "name": "descriptive Mermaid stays opaque",
+    "source": "# Feature: corpus\n## Scenario: value\n\n```mermaid\nflowchart LR\n A --> B\n```\n\n- Then okay\n",
+    "expected": {
+      "arguments": [
+        [
+          null
+        ]
+      ]
+    }
+  }
+]

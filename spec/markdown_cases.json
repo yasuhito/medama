@@ -1,0 +1,150 @@
+[
+  {
+    "name": "plain scenario",
+    "source": "# Feature: sum\n## Scenario: value\n- Then okay\n",
+    "expected": {
+      "names": [
+        "value"
+      ]
+    }
+  },
+  {
+    "name": "outline row line",
+    "source": "# Feature: outline\n## Scenario Outline: value <n>\n- Then <n>\n### Examples:\n | n |\n | --- |\n | two |\n",
+    "expected": {
+      "lines": [
+        7
+      ]
+    }
+  },
+  {
+    "name": "background order",
+    "source": "# Feature: bg\n## Background: prepare\n- Given start\n## Scenario: value\n- Then okay\n",
+    "expected": {
+      "texts": [
+        [
+          "start",
+          "okay"
+        ]
+      ]
+    }
+  },
+  {
+    "name": "tag inheritance",
+    "source": "`@feature`\n# Feature: tags\n`@scenario`\n## Scenario Outline: row\n- Then <n>\n`@example`\n### Examples:\n | n |\n | --- |\n | x |\n",
+    "expected": {
+      "tags": [
+        [
+          "@feature",
+          "@scenario",
+          "@example"
+        ]
+      ]
+    }
+  },
+  {
+    "name": "escaped table cell",
+    "source": "# Feature: table\n## Scenario: table\n- Then table\n | key | value |\n | --- | --- |\n | a | one\\|two |\n",
+    "expected": {
+      "arguments": [
+        [
+          {
+            "type": "table",
+            "rows": [
+              [
+                "key",
+                "value"
+              ],
+              [
+                "a",
+                "one|two"
+              ]
+            ]
+          }
+        ]
+      ]
+    }
+  },
+  {
+    "name": "doc relative indentation",
+    "source": "# Feature: doc\n## Scenario: doc\n- Then doc\n    ```text\n    foo\n      nested\n    ```\n",
+    "expected": {
+      "arguments": [
+        [
+          {
+            "type": "doc_string",
+            "content": "foo\n  nested",
+            "media_type": "text"
+          }
+        ]
+      ]
+    }
+  },
+  {
+    "name": "ordinary prose",
+    "source": "# Feature: prose\n## Notes: prerequisites\n## Scenario: value\n- A note\nGiven this is prose.\n- Then okay\n",
+    "expected": {
+      "texts": [
+        [
+          "okay"
+        ]
+      ]
+    }
+  },
+  {
+    "name": "literal fenced example",
+    "source": "# Feature: prose\n```markdown\n## シナリオ: illustration\n- And: literal\n```\n## Scenario: value\n- Then okay\n",
+    "expected": {
+      "names": [
+        "value"
+      ]
+    }
+  },
+  {
+    "name": "bad colon before feature",
+    "source": "- Then: forbidden\n# Feature: bad\n## Scenario: okay\n- Then okay\n",
+    "error": true
+  },
+  {
+    "name": "bad colon before scenario",
+    "source": "# Feature: bad\n- And: forbidden\n## Scenario: okay\n- Then okay\n",
+    "error": true
+  },
+  {
+    "name": "unsupported structural heading",
+    "source": "# Feature: bad\n## Scenario: okay\n- Then okay\n## シナリオ: unsupported\n",
+    "error": true
+  },
+  {
+    "name": "missing outline placeholder",
+    "source": "# Feature: bad\n## Scenario Outline: <missing>\n- Then <missing>\n### Examples:\n | n |\n | --- |\n | x |\n",
+    "error": true
+  },
+  {
+    "name": "Scenario prose and Mermaid",
+    "source": "# Feature: sum\n## Scenario: sum\n\n二つの値を足す。\n\n結果も確認する。\n\n### 背景と目的\n初期値を明示する。\n\n### 処理の流れ\n```mermaid\nflowchart LR\n A --> B\n %% ## Scenario: literal\n```\n\n- Given value 2\n- Then equals 2\n",
+    "expected": {
+      "texts": [
+        [
+          "value 2",
+          "equals 2"
+        ]
+      ]
+    }
+  },
+  {
+    "name": "step fence remains doc string across blank line",
+    "source": "# Feature: doc\n## Scenario: diagram\n- Then diagram\n\n```mermaid\nflowchart LR\n A --> B\n```\n",
+    "expected": {
+      "arguments": [
+        [
+          {
+            "type": "doc_string",
+            "content": "flowchart LR\n A --> B",
+            "media_type": "mermaid"
+          }
+        ]
+      ]
+    }
+  }
+]
